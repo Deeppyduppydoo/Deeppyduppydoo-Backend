@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.predict.predict_api import router
 
 def create_app() -> FastAPI:
     app = FastAPI(
@@ -10,6 +11,8 @@ def create_app() -> FastAPI:
     return app
 
 app = create_app()
+
+app.include_router(router=router)
 
 @app.get("/")
 async def read_root():
