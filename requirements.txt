@@ -2,3 +2,6 @@ uvicorn
 fastapi
 tensorflow
 numpy
+torch
+torchvision
+PIL
