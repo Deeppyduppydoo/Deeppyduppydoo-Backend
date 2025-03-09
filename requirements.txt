@@ -4,4 +4,4 @@ tensorflow
 numpy
 torch
 torchvision
-PIL
+Pillow
