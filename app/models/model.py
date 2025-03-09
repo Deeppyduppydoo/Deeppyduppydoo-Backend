@@ -40,7 +40,7 @@ class Pytorch_MBv3():
 
     def loadModel(self,path_to_model :str):
         self.model.load_state_dict(torch.load(path_to_model,map_location=torch.device('cpu')))
-
+        
     def predict(self, img):
         class_labels = ['Oak', 'Pat', 'Pookkie', 'Praewa', 'Tup']
         try:
@@ -49,17 +49,16 @@ class Pytorch_MBv3():
                          transforms.Grayscale(num_output_channels=3),
                          transforms.ToTensor(),
                          transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-            img_tensor = Image.open(img) # img: path
-            img_tensor = transform(img_tensor)
+            img_tensor = transform(img)
             img_tensor = img_tensor.unsqueeze(0)
             self.model.eval()
             with torch.no_grad():
                 outputs = self.model(img_tensor)
                 # prob = torch.nn.functional.softmax(outputs, dim=1) #to probability เผื่อใช้
-                top_class = torch.max(outputs, dim=1)
-                predicted_class_label = class_labels[top_class.item()]
+                top_class = torch.argmax(outputs)
+                predicted_class_label = class_labels[top_class]
         except Exception as e:
-            print(f"Error processing image {img_path}: {e}")
+            print(f"Error processing image {img}: {e}")
             predicted_class_label = "Error"
 
         return predicted_class_label
