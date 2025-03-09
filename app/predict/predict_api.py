@@ -2,6 +2,7 @@ from fastapi import APIRouter, File, UploadFile
 from tensorflow.keras.preprocessing import image
 from io import BytesIO
 from app.utils.load_models import Vgg16
+from app.utils.load_models import Mbv3
 
 router = APIRouter()
 
@@ -13,5 +14,12 @@ async def predict_Vgg16(file: UploadFile):
     img = image.load_img(BytesIO(contents), target_size=(img_height, img_width))
 
     prediction = Vgg16.predictTensorflow(img)
+
+    return {"filename" : file.filename,"prediction": prediction}
+
+@router.post('/predict-Mbv3')
+async def predict_Vgg16(file: UploadFile):
+
+    prediction = Mbv3.predict(file)
 
     return {"filename" : file.filename,"prediction": prediction}
