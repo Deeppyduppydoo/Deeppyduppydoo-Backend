@@ -62,3 +62,38 @@ class Pytorch_MBv3():
             predicted_class_label = "Error"
 
         return predicted_class_label
+    
+class Pytorch_ResNet:
+    def __init__(self):
+        self.model = torchvision.models.resnet18(weights=None)
+        num_ftrs = self.model.fc.in_features
+        self.model.fc = nn.Linear(num_ftrs, 5)
+
+    def loadModel(self, path_to_model: str):
+        self.model.load_state_dict(torch.load(path_to_model, map_location=torch.device('cpu')))
+        self.model.eval()
+
+    def predict(self, img_path: str):
+        class_labels = ['Oak', 'Pat', 'Pookkie', 'Praewa', 'Tup']
+        try:
+            transform = transforms.Compose([
+                transforms.Resize((224, 224)),
+                transforms.Grayscale(num_output_channels=3),
+                transforms.ToTensor(),
+                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+            ])
+            
+            img = Image.open(img_path)
+            img_tensor = transform(img).unsqueeze(0)
+            
+            with torch.no_grad():
+                outputs = self.model(img_tensor)
+                top_class = torch.argmax(outputs)
+                predicted_class_label = class_labels[top_class.item()]
+                
+        except Exception as e:
+            print(f"Error processing image {img_path}: {e}")
+            predicted_class_label = "Error"
+
+        return predicted_class_label
+        
