@@ -73,7 +73,7 @@ class Pytorch_ResNet:
         self.model.load_state_dict(torch.load(path_to_model, map_location=torch.device('cpu')))
         self.model.eval()
 
-    def predict(self, img_path: str):
+    def predict(self, img):
         class_labels = ['Oak', 'Pat', 'Pookkie', 'Praewa', 'Tup']
         try:
             transform = transforms.Compose([
@@ -83,7 +83,6 @@ class Pytorch_ResNet:
                 transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
             ])
             
-            img = Image.open(img_path)
             img_tensor = transform(img).unsqueeze(0)
             
             with torch.no_grad():
@@ -92,7 +91,7 @@ class Pytorch_ResNet:
                 predicted_class_label = class_labels[top_class.item()]
                 
         except Exception as e:
-            print(f"Error processing image {img_path}: {e}")
+            print(f"Error processing image: {e}")
             predicted_class_label = "Error"
 
         return predicted_class_label

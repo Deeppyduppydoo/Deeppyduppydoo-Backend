@@ -28,7 +28,7 @@ async def predict_Vgg16(file: UploadFile):
     return {"filename" : file.filename,"prediction": prediction}
 
 @router.post('/predict-Resnet')
-async def predict_Vgg16(file: UploadFile):
+async def predict_Resnet(file: UploadFile):
     img_height,img_width = 224, 224
 
     contents = await file.read()
