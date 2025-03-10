@@ -15,17 +15,23 @@ async def predict_Vgg16(file: UploadFile):
     contents = await file.read()
     img = image.load_img(BytesIO(contents), target_size=(img_height, img_width))
 
-    prediction = Vgg16.predictTensorflow(img)
+    prediction, percent = Vgg16.predictTensorflow(img)
 
-    return {"filename" : file.filename,"prediction": prediction}
+    for key in percent:
+        percent[key] = float(percent[key])
+
+    return {"filename" : file.filename,"prediction": prediction, "percent": percent}
 
 @router.post('/predict-Mbv3')
 async def predict_Mbv3(file: UploadFile):
     contents = await file.read()
     img = Image.open(BytesIO(contents)) # img: path
-    prediction = Mbv3.predict(img)
+    prediction , percent = Mbv3.predict(img)
 
-    return {"filename" : file.filename,"prediction": prediction}
+    for key in percent:
+        percent[key] = float(percent[key])
+
+    return {"filename" : file.filename,"prediction": prediction, "percent": percent}
 
 @router.post('/predict-Resnet')
 async def predict_Resnet(file: UploadFile):
@@ -34,6 +40,9 @@ async def predict_Resnet(file: UploadFile):
     contents = await file.read()
     img = image.load_img(BytesIO(contents), target_size=(img_height, img_width))
 
-    prediction = Resnet18.predict(img)
+    prediction , percent = Resnet18.predict(img)
 
-    return {"filename" : file.filename,"prediction": prediction}
+    for key in percent:
+        percent[key] = float(percent[key])
+
+    return {"filename" : file.filename,"prediction": prediction, "percent": percent}
