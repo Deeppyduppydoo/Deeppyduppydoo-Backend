@@ -51,3 +51,4 @@ def get_image(image_path : str = Query(..., description="Path to the image")):
         return FileResponse(sanitized_path)
     else:
         raise HTTPException(status_code=404, detail="Image not found")
+    
