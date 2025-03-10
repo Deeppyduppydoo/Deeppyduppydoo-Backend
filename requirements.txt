@@ -1,2 +1,7 @@
 uvicorn
 fastapi
+tensorflow
+numpy
+torch
+torchvision
+Pillow
