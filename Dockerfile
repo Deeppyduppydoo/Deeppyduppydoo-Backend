@@ -32,4 +32,5 @@ COPY . .
 EXPOSE 8000
 
 # Start the FastAPI application using Gunicorn for better performance in production
-CMD ["gunicorn", "app.api:app", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:8000", "-w", "10", "--timeout", "30"]
+CMD ["uvicorn", "app.api:app", "--host", "0.0.0.0", "--port", "8000"]
+
