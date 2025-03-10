@@ -20,7 +20,7 @@ async def predict_Vgg16(file: UploadFile):
     return {"filename" : file.filename,"prediction": prediction}
 
 @router.post('/predict-Mbv3')
-async def predict_Vgg16(file: UploadFile):
+async def predict_Mbv3(file: UploadFile):
     contents = await file.read()
     img = Image.open(BytesIO(contents)) # img: path
     prediction = Mbv3.predict(img)
